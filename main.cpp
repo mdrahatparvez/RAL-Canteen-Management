@@ -346,3 +346,96 @@ void Canteen::deleteItem()
     }
 }
  
+
+// 3rd Member of the team 192-15-13221
+
+void Canteen::show()
+{
+    cout << "\nCanteen Management System" << endl;
+
+    cout << "1.New Customer" << endl;
+    cout << "2.All Items" << endl;
+    cout << "3.Sold Items" << endl;
+    cout << "4.Add New Item" << endl;
+    cout << "5.Edit Item" << endl;
+    cout << "6.Delete Item" << endl;
+    cout << "7.Exit" << endl;
+    cout<<"Enter your choice: ";
+}
+
+int main()
+{
+    system("cls");
+    system("title Canteen Management Program");
+    system("mode con: cols=140 lines=30");
+    system("color 0f");
+    Canteen canteen;
+
+    int choice;
+    string name;
+
+again:
+    canteen.show();
+
+    cin>>choice;
+    if(choice == 1)
+    {
+        cout<<"Enter you name: ";
+        cin>>name;
+        cout<<endl;
+        canteen.allItems();
+        cout<<endl;
+        mm:
+        cout<<"\nBuy any item. Enter Name of the item: ";
+        string item, quantity;
+        cin>>item;
+        if(canteen.searchByName(item))
+        {
+            cout<<"This item is not present";
+            goto mm;
+        }
+        customer:
+        cout<<"\nEnter quantity of the item: ";
+        cin>>quantity;
+        if(canteen.checkQuantity(item, quantity))
+        {
+            canteen.addNewSale(item, quantity);
+            goto again;
+        }
+        else
+        {
+            cout<<quantity<<" item is not present in our canteen. Try again";
+            goto customer;
+        }
+    }
+    else if(choice == 2)
+    {
+        canteen.allItems();
+        goto again;
+    }
+    else if(choice == 3)
+    {
+        canteen.soldItems();
+        goto again;
+    }
+    else if(choice == 4)
+    {
+        canteen.addNewItem();
+        goto again;
+    }
+    else if(choice == 5)
+    {
+        canteen.editItem();
+        goto again;
+    }
+    else if(choice == 6)
+    {
+        canteen.deleteItem();
+        goto again;
+    }
+    else if(choice == 7)
+    {
+        exit(0);
+    }
+    return 0;
+}
