@@ -240,4 +240,109 @@ bool Canteen::checkQuantity(string item, string quantity)
 }
 
 
+
+//Added the code  2nd member of the Team  = 192-15-13174
+
+void Canteen::editItem()
+{
+    system("cls");
+    Canteen::allItems();
+
+    string id;
+    cout<<"Enter item Id to edit: ";
+    cin>>id;
+
+    bool found = searchById(id);
+
+    if(found)
+    {
+
+        string query = "select * from items where id = '"+id+"'";
+        const char* q = query.c_str();
+        qstate = mysql_query(conn, q);
+
+        if(!qstate)
+        {
+            res = mysql_store_result(conn);
+            row =mysql_fetch_row(res);
+            cout<<"Name "<<row[1]<<" Quantity "<<row[2]<<" with ID "<<row[0];
+        }
+        else
+        {
+            cout << "Query Execution Problem!" << mysql_errno(conn) << endl;
+        }
+
+        string name, quantity;
+        cout<<"\n\nEnter new name: ";
+        cin>>name;
+        cout<<"Enter new quantity: ";
+        cin>>quantity;
+
+        string update_query = "update items set name = '"+name+"', quantity = '"+quantity+"' where id = '"+id+"'";
+
+        q = update_query.c_str();
+        qstate = mysql_query(conn, q);
+
+        if (!qstate)
+        {
+            cout << endl << "Successfully Updated In Database." << endl;
+        }
+        else
+        {
+            cout << "Failed To Update!" << mysql_errno(conn) << endl;
+        }
+    }
+    else
+    {
+        cout << "Please Enter a valid ID." << endl;
+    }
+}
+
+void Canteen::deleteItem()
+{
+    Canteen::allItems();
+
+    string id;
+    cout<<"Enter item Id to delete: ";
+    cin>>id;
+
+    bool found = false;
+
+    string query = "SELECT id FROM items";
+    const char* q = query.c_str();
+    qstate = mysql_query(conn, q);
+    res = mysql_store_result(conn);
+
+    if(!qstate)
+    {
+        while ((row = mysql_fetch_row(res)))
+        {
+            if(row[0] == id)
+            {
+                found = true;
+                break;
+            }
+        }
+    }
+
+    if(found)
+    {
+        query = "delete from items where id = '"+id+"'";
+        q = query.c_str();
+        qstate = mysql_query(conn, q);
+
+        if (!qstate)
+        {
+            cout << "Successfully Deleted From Item Record." << endl;
+        }
+        else
+        {
+            cout << "Failed To Delete!" << mysql_errno(conn) << endl;
+        }
+    }
+    else
+    {
+        cout << "Please Enter a valid ID." << endl;
+    }
+}
  
