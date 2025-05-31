@@ -1,1 +1,1 @@
-# RAL-Canteen-Management
+# Canteen-Management
